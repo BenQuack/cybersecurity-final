@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Create Account</h2>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form action="/user_creation" method="POST">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username"
+                   value="{{ request.form.get('username', '') }}" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password"
+                   oninput="validatePassword()" required>
+
+            <ul id="requirements">
+                <li id="req-length">At least 12 characters</li>
+                <li id="req-upper">At least one uppercase letter</li>
+                <li id="req-lower">At least one lowercase letter</li>
+                <li id="req-number">At least one number</li>
+                <li id="req-special">At least one special character</li>
+            </ul>
+
+            <button type="submit" id="submit-btn" disabled>Create Account</button>        </form>
+    </div>
+
+    <script>
+        function validatePassword() {
+            const password = document.getElementById('password').value;
+            const special = "!@#$%^&*()_+-=[]{}|;':\",./<>?";
+
+            const valid = {
+                length:  password.length >= 12,
+                upper:   /[A-Z]/.test(password),
+                lower:   /[a-z]/.test(password),
+                number:  /[0-9]/.test(password),
+                special: [...password].some(c => special.includes(c))
+            };
+
+            check('req-length',  valid.length);
+            check('req-upper',   valid.upper);
+            check('req-lower',   valid.lower);
+            check('req-number',  valid.number);
+            check('req-special', valid.special);
+
+            // disable submit if any check fails
+            document.getElementById('submit-btn').disabled = !Object.values(valid).every(Boolean);
+        }
+
+        function check(id, passing) {
+            const el = document.getElementById(id);
+            el.style.color = passing ? 'green' : 'red';
+        }
+    </script>
+</body>
+</html>
