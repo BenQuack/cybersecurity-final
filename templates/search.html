@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="search-container">
+        <h2>Search</h2>
+        <form action="/search/{{ type }}" method="GET">
+            <label for="query">Query:</label>
+            <input type="text" id="query" name="query" required>
+
+            <button type="submit">Search</button>
+        </form>
+    </div>
+</html>

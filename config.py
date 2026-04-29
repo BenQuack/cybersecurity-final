@@ -6,7 +6,7 @@ import requests
 DEBUG = True
 SC = ";"
 TEMPLATES_AUTO_RELOAD = True
-DB_FILE = './instance/var/db/not_so_secure_database.db'
+DB_FILE = 'databases/records.db'
 SECRET_KEY = 'This is not very secret, is it?'
 CREDENTIALS_FILE = 'databases/accounts.db'
 LESSON_CATALOG = {

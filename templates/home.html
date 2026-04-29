@@ -3,10 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Home</title>
     <link rel="stylesheet" href="../static/style.css">
 </head>
 <body>
-    <p>you shouldn't be here...</p>
+    <h1>Welcome to your Home Page {{ user }}</h1>
+    <button id="ubtn" onclick="user()">User Panel</button>
+    <button id='ebtn' onclick="engineer()">Engineer Panel</button>
+    <button id='abtn' onclick="admin()">Admin Panel</button>
 </body>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const buttons = document.querySelectorAll('button');
+        buttons.forEach(btn => btn.style.display = 'none');
+
+        const perms = {{ permissions }};
+        if (perms === 3){
+            document.getElementById('ubtn').style.display = 'inline-block';
+        }
+        if (perms < 3){
+            document.getElementById('ebtn').style.display = 'inline-block';
+        }
+        if (perms < 2){
+            document.getElementById('abtn').style.display = 'inline-block';
+        }
+
+    });
+
+    function user() {
+        fetch(`/search/${perms}`);
+    }
+    function engineer() {
+        fetch(`/search/${perms}`);
+    }
+    function admin() {
+        fetch(`/search/${perms}`);
+    }
+</script>
 </html>
