@@ -26,13 +26,17 @@
             <label for="password">Password:</label>
             <input type="password" id="password" name="password"
                    oninput="validatePassword()" required>
+            <button type="button" onclick="genPassword()">Generate Password</button>
+            <p id="gen-password-display"></p>
 
             <ul id="requirements">
-                <li id="req-length">At least 12 characters</li>
+                <li id="req-length">At least 8 characters</li>
+                <li id="req-length-max">No more than 25 characters</li>
                 <li id="req-upper">At least one uppercase letter</li>
                 <li id="req-lower">At least one lowercase letter</li>
                 <li id="req-number">At least one number</li>
                 <li id="req-special">At least one special character</li>
+                <li id="req-no-spaces">No spaces</li>
             </ul>
 
             <button type="submit" id="submit-btn" disabled>Create Account</button>        </form>
@@ -40,31 +44,57 @@
     </div>
 
     <script>
-        function validatePassword() {
+        function validatePassword(updateUI=true) {
             const password = document.getElementById('password').value;
             const special = "!@#$%^&*()_+-=[]{}|;':\",./<>?";
 
-            const valid = {
-                length:  password.length >= 12,
+            const passwordState = {
+                length:  password.length >= 8,
+                length_max: password.length <= 25,
                 upper:   /[A-Z]/.test(password),
                 lower:   /[a-z]/.test(password),
                 number:  /[0-9]/.test(password),
-                special: [...password].some(c => special.includes(c))
+                special: [...password].some(c => special.includes(c)),
+                no_spaces: !/\s/.test(password)
             };
 
-            check('req-length',  valid.length);
-            check('req-upper',   valid.upper);
-            check('req-lower',   valid.lower);
-            check('req-number',  valid.number);
-            check('req-special', valid.special);
-
-            // disable submit if any check fails
-            document.getElementById('submit-btn').disabled = !Object.values(valid).every(Boolean);
+            if (updateUI) {
+                check(passwordState);
+            }
         }
 
-        function check(id, passing) {
+        function check(passwordState) {
+
+            updateStatus('req-length',  passwordState.length);
+            updateStatus('req-length-max', passwordState.length_max);
+            updateStatus('req-upper',   passwordState.upper);
+            updateStatus('req-lower',   passwordState.lower);
+            updateStatus('req-number',  passwordState.number);
+            updateStatus('req-special', passwordState.special);
+            updateStatus('req-no-spaces', passwordState.no_spaces);
+
+            // disable submit if any check fails
+            document.getElementById('submit-btn').disabled = !Object.values(passwordState).every(Boolean);
+
             const el = document.getElementById(id);
             el.style.color = passing ? 'green' : 'red';
+        }
+
+        function updateStatus(id, passing){
+            const el = document.getElementById(id);
+            el.style.color = passing ? 'green' : 'red';
+        }
+
+        function genPassword(){
+            const length = 12;
+            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}|;':\",./<>?";
+            let password = "";
+            for (let i = 0; i < length; i++) {
+                password += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            document.getElementById('password').value = password;
+            document.getElementById('gen-password-display').textContent = "Generated Password: " + password;
+            validatePassword(updateUI=false);
         }
     </script>
 </body>

@@ -30,14 +30,8 @@
 
     });
 
-    function user() {
-        fetch(`/search/${perms}`);
-    }
-    function engineer() {
-        fetch(`/search/${perms}`);
-    }
-    function admin() {
-        fetch(`/search/${perms}`);
-    }
+    function user() { window.location.href = "{{ url_for('user_search') }}"; }
+    function engineer() { window.location.href = "{{ url_for('eng_search') }}"; }
+    function admin() { window.location.href = "{{ url_for('adm_search') }}"; }
 </script>
 </html>

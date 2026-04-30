@@ -1,0 +1,218 @@
+/* ── Reset & base ─────────────────────────────────────────── */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background-color: #0f1117;
+    color: #e2e8f0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+/* ── Typography ───────────────────────────────────────────── */
+h1, h2 {
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    margin-bottom: 1.25rem;
+    color: #f0f4ff;
+}
+
+h1 { font-size: 1.75rem; }
+h2 { font-size: 1.4rem; }
+
+/* ── Cards / containers ───────────────────────────────────── */
+.login-container,
+.container,
+.search-container {
+    background-color: #1a1d2e;
+    border: 1px solid #2d3148;
+    border-radius: 10px;
+    padding: 2.25rem 2.5rem;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.search-container {
+    max-width: 640px;
+    text-align: center;
+}
+
+/* ── Forms ────────────────────────────────────────────────── */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #94a3b8;
+    margin-top: 0.5rem;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 0.6rem 0.85rem;
+    background-color: #0f1117;
+    border: 1px solid #2d3148;
+    border-radius: 6px;
+    color: #e2e8f0;
+    font-size: 0.95rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+    outline: none;
+    border-color: #4f6ef7;
+    box-shadow: 0 0 0 3px rgba(79, 110, 247, 0.2);
+}
+
+/* ── Buttons ──────────────────────────────────────────────── */
+button,
+a.button {
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    background-color: #4f6ef7;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    transition: background-color 0.2s, transform 0.1s;
+    margin-top: 0.75rem;
+}
+
+button:hover:not(:disabled),
+a.button:hover {
+    background-color: #3a56d4;
+    transform: translateY(-1px);
+}
+
+button:active:not(:disabled),
+a.button:active {
+    transform: translateY(0);
+}
+
+button:disabled {
+    background-color: #2d3148;
+    color: #64748b;
+    cursor: not-allowed;
+}
+
+/* secondary / outline style for "Back to sign in" wrapper */
+button:has(a.button) {
+    background: none;
+    padding: 0;
+    border: none;
+    margin-top: 0.5rem;
+}
+
+button:has(a.button):hover {
+    transform: none;
+}
+
+/* ── Home page panel buttons ──────────────────────────────── */
+#ubtn { background-color: #4f6ef7; }
+#ebtn { background-color: #0e9f6e; }
+#abtn { background-color: #c0392b; }
+
+#ubtn:hover { background-color: #3a56d4; }
+#ebtn:hover { background-color: #0a7f58; }
+#abtn:hover { background-color: #962d22; }
+
+/* ── Password requirements list ──────────────────────────── */
+#requirements {
+    list-style: none;
+    font-size: 0.82rem;
+    margin-top: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.75rem 1rem;
+    background-color: #0f1117;
+    border: 1px solid #2d3148;
+    border-radius: 6px;
+}
+
+#requirements li {
+    color: #ef4444;
+    padding-left: 1.1rem;
+    position: relative;
+}
+
+#requirements li::before {
+    content: '✗';
+    position: absolute;
+    left: 0;
+    font-size: 0.75rem;
+}
+
+#requirements li[style*="green"]::before {
+    content: '✓';
+}
+
+/* ── Generated password display ──────────────────────────── */
+#gen-password-display {
+    font-size: 0.82rem;
+    color: #94a3b8;
+    font-family: 'Courier New', monospace;
+    word-break: break-all;
+    margin-top: 0.25rem;
+}
+
+/* ── Flash messages ───────────────────────────────────────── */
+.error,
+.danger {
+    background-color: rgba(239, 68, 68, 0.15);
+    border: 1px solid #ef4444;
+    color: #fca5a5;
+    padding: 0.6rem 0.9rem;
+    border-radius: 6px;
+    font-size: 0.88rem;
+    margin-top: 0.75rem;
+}
+
+.success {
+    background-color: rgba(14, 159, 110, 0.15);
+    border: 1px solid #0e9f6e;
+    color: #6ee7b7;
+    padding: 0.6rem 0.9rem;
+    border-radius: 6px;
+    font-size: 0.88rem;
+    margin-top: 0.75rem;
+}
+
+.info {
+    background-color: rgba(79, 110, 247, 0.15);
+    border: 1px solid #4f6ef7;
+    color: #a5b4fc;
+    padding: 0.6rem 0.9rem;
+    border-radius: 6px;
+    font-size: 0.88rem;
+    margin-top: 0.75rem;
+}
+
+/* ── Links ────────────────────────────────────────────────── */
+a {
+    color: #4f6ef7;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
