@@ -26,7 +26,9 @@
             <label for="password">Password:</label>
             <input type="password" id="password" name="password"
                    oninput="validatePassword()" required>
-            <button type="button" onclick="genPassword()">Generate Password</button>
+            <button type="button" onclick="genPassword()">
+                Generate Password
+            </button>
             <p id="gen-password-display"></p>
 
             <ul id="requirements">
@@ -39,62 +41,77 @@
                 <li id="req-no-spaces">No spaces</li>
             </ul>
 
-            <button type="submit" id="submit-btn" disabled>Create Account</button>        </form>
-            <button><a href="/" class="button">Back to sign in.</a></button>
+            <button type="submit" id="submit-btn" disabled>
+                Create Account
+            </button>
+        </form>
+        <button><a href="/" class="button">Back to sign in.</a></button>
     </div>
 
     <script>
-        function validatePassword(updateUI=true) {
+        /**
+         * Evaluate the current password field value against all requirements.
+         * Updates the requirement list colours and enables/disables the submit
+         * button.  Always runs with UI updates enabled.
+         */
+        function validatePassword() {
             const password = document.getElementById('password').value;
             const special = "!@#$%^&*()_+-=[]{}|;':\",./<>?";
 
-            const passwordState = {
-                length:  password.length >= 8,
-                length_max: password.length <= 25,
-                upper:   /[A-Z]/.test(password),
-                lower:   /[a-z]/.test(password),
-                number:  /[0-9]/.test(password),
-                special: [...password].some(c => special.includes(c)),
-                no_spaces: !/\s/.test(password)
+            const state = {
+                length:    password.length >= 8,
+                lengthMax: password.length <= 25,
+                upper:     /[A-Z]/.test(password),
+                lower:     /[a-z]/.test(password),
+                number:    /[0-9]/.test(password),
+                special:   [...password].some(c => special.includes(c)),
+                noSpaces:  !/\s/.test(password)
             };
 
-            if (updateUI) {
-                check(passwordState);
-            }
+            updateStatus('req-length',    state.length);
+            updateStatus('req-length-max', state.lengthMax);
+            updateStatus('req-upper',     state.upper);
+            updateStatus('req-lower',     state.lower);
+            updateStatus('req-number',    state.number);
+            updateStatus('req-special',   state.special);
+            updateStatus('req-no-spaces', state.noSpaces);
+
+            const allPass = Object.values(state).every(Boolean);
+            document.getElementById('submit-btn').disabled = !allPass;
         }
 
-        function check(passwordState) {
-
-            updateStatus('req-length',  passwordState.length);
-            updateStatus('req-length-max', passwordState.length_max);
-            updateStatus('req-upper',   passwordState.upper);
-            updateStatus('req-lower',   passwordState.lower);
-            updateStatus('req-number',  passwordState.number);
-            updateStatus('req-special', passwordState.special);
-            updateStatus('req-no-spaces', passwordState.no_spaces);
-
-            // disable submit if any check fails
-            document.getElementById('submit-btn').disabled = !Object.values(passwordState).every(Boolean);
-
-            const el = document.getElementById(id);
-            el.style.color = passing ? 'green' : 'red';
+        /**
+         * Colour a single requirement list item green (pass) or red (fail).
+         *
+         * @param {string}  id      - The element ID of the requirement item.
+         * @param {boolean} passing - True if the requirement is satisfied.
+         */
+        function updateStatus(id, passing) {
+            document.getElementById(id).style.color = passing
+                ? 'green'
+                : 'red';
         }
 
-        function updateStatus(id, passing){
-            const el = document.getElementById(id);
-            el.style.color = passing ? 'green' : 'red';
-        }
-
-        function genPassword(){
+        /**
+         * Generate a random 12-character password that satisfies all
+         * requirements, populate the password field, display the generated
+         * value in plain text, and validate the field so the submit button
+         * becomes enabled.
+         */
+        function genPassword() {
             const length = 12;
-            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}|;':\",./<>?";
+            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+                + "0123456789!@#$%^&*()_+-=[]{}|;':\",./<>?";
             let password = "";
             for (let i = 0; i < length; i++) {
-                password += chars.charAt(Math.floor(Math.random() * chars.length));
+                password += chars.charAt(
+                    Math.floor(Math.random() * chars.length)
+                );
             }
             document.getElementById('password').value = password;
-            document.getElementById('gen-password-display').textContent = "Generated Password: " + password;
-            validatePassword(updateUI=false);
+            document.getElementById('gen-password-display').textContent =
+                "Generated Password: " + password;
+            validatePassword();
         }
     </script>
 </body>
